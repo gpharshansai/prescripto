@@ -1,0 +1,59 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Containerfile
+    restart: unless-stopped
+    environment:
+      PORT: "4000"
+      MONGODB_URI: ${MONGODB_URI:-mongodb://mongo:27017/prescripto}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?Set ADMIN_EMAIL in .env}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set ADMIN_PASSWORD in .env}
+    volumes:
+      - uploads-data:/app/uploads
+    depends_on:
+      mongo:
+        condition: service_healthy
+    ports:
+      - "${HOST_BIND_IP:-127.0.0.1}:4000:4000"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Containerfile
+      args:
+        VITE_BACKEND_URL: ${VITE_BACKEND_URL:-http://localhost:4000}
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "${HOST_BIND_IP:-127.0.0.1}:5173:5173"
+
+  admin:
+    build:
+      context: .
+      dockerfile: admin/Containerfile
+      args:
+        VITE_BACKEND_URL: ${VITE_BACKEND_URL:-http://localhost:4000}
+        VITE_CURRENCY: ${VITE_CURRENCY:-INR}
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "${HOST_BIND_IP:-127.0.0.1}:5174:5174"
+
+volumes:
+  mongo-data:
+  uploads-data:

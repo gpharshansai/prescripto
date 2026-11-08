@@ -1,19 +1,8 @@
 # Prescripto - Doctor Appointment Platform
 
-Prescripto is a full-stack doctor appointment booking platform built using the MERN stack. Patients can find doctors, book and manage appointments, and submit reviews. Images and data are stored locally; no third-party API keys are required. Online payments, AI assistance, and appointment emails are not included.
+Prescripto is a full-stack doctor appointment booking platform built using the MERN stack. Patients can find doctors, book and manage appointments, and submit reviews. Images and data are stored locally
 
 The application also includes separate Admin and Doctor dashboards for managing doctors, appointments, schedules, availability, and patients.
-
-## Live Demo
-
-Frontend:
-Add your Vercel frontend link here
-
-Backend API:
-Add your Render backend link here
-
-Admin Panel:
-Add your Admin Vercel link here
 
 ## Features
 

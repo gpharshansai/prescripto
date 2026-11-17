@@ -95,18 +95,12 @@ Users can install Prescripto on supported desktop and mobile devices and open it
 ### Frontend
 
 - React.js
-- Vite
-- Tailwind CSS
-- React Router
-- Axios
-- React Toastify
-
+- 
 ### Backend
 
 - Node.js
 - Express.js
 - MongoDB
-- Mongoose
 
 ### Authentication
 
